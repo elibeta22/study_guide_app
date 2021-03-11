@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Professor;
@@ -25,10 +26,14 @@ class ProfessorController extends Controller
 
         foreach ($professor->ratings as $rating){
 
-            $rating_by_info = Review::find($rating->id);
-            $review_by_name = Professor::find($rating->review_by);
-            $rating->review_by_name = $review_by_name->professor_name;
-
+                $review_by_user = User::find($rating->review_by);
+                if($review_by_user->user_type_id == 2){
+                    $review_by_name = Professor::where('professor_user_id', '=', $review_by_user->id)->get();
+                    $rating->review_by_name = $review_by_name[0]['professor_name'];
+                }else{
+                    $review_by_name = Student::where('student_user_id', '=', $review_by_user->id)->get();
+                    $rating->review_by_name = $review_by_name[0]['student_name'];
+                }
 
         }
 

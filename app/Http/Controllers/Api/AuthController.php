@@ -35,7 +35,6 @@ class AuthController extends Controller
 
         // Generate random code
         $code = mt_rand(100000, 999999);
-        error_log($request->user_type_id);
 
         if($request->user_type_id == 2){
 
@@ -59,7 +58,6 @@ class AuthController extends Controller
                 'school_id'=>$request->school_id,
                 'department_id'=>$request->department_id,
             ]);
-
         }
 
         if($request->user_type_id == 1){
